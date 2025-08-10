@@ -11,6 +11,7 @@ import 'pages/learn_page.dart';
 import 'pages/video_news_page.dart';
 import 'pages/settings_page.dart';
 import 'pages/paywall_page.dart';
+import 'pages/pro_feed_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,11 @@ void main() async {
             path: '/learn',
             name: 'learn',
             builder: (context, state) => const LearnPage(),
+          ),
+          GoRoute(
+            path: '/feed',
+            name: 'feed',
+            builder: (context, state) => const ProFeedPage(),
           ),
           GoRoute(
             path: '/videos',

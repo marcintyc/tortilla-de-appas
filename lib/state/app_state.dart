@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/feed_post.dart';
+
 enum CefrLevel { a1, a2, b1, b2 }
 
 extension CefrLevelX on CefrLevel {
@@ -35,9 +37,15 @@ class AppState extends ChangeNotifier {
   bool _isSubscribed = false;
   final Map<String, LessonProgress> _progressByLessonId = {};
 
+  // PRO community feed state
+  final List<FeedPost> _userFeedPosts = [];
+  final Set<String> _likedPostIds = {};
+
   CefrLevel? get selectedLevel => _selectedLevel;
   bool get isSubscribed => _isSubscribed;
   Map<String, LessonProgress> get progress => _progressByLessonId;
+  List<FeedPost> get userFeedPosts => List.unmodifiable(_userFeedPosts);
+  Set<String> get likedPostIds => Set.unmodifiable(_likedPostIds);
 
   Future<void> restoreFromStorage() async {
     final prefs = await SharedPreferences.getInstance();
@@ -59,6 +67,12 @@ class AppState extends ChangeNotifier {
         final lp = LessonProgress.fromJson(p);
         _progressByLessonId[lp.lessonId] = lp;
       }
+      final liked = (map['likedPostIds'] as List?)?.cast<String>() ?? [];
+      _likedPostIds.addAll(liked);
+      final userPosts = (map['userFeedPosts'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+      for (final up in userPosts) {
+        _userFeedPosts.add(FeedPost.fromJson(up));
+      }
     } catch (_) {
       // ignore malformed state
     }
@@ -70,6 +84,8 @@ class AppState extends ChangeNotifier {
       'selectedLevel': _selectedLevel?.label,
       'isSubscribed': _isSubscribed,
       'progress': _progressByLessonId.values.map((e) => e.toJson()).toList(),
+      'likedPostIds': _likedPostIds.toList(),
+      'userFeedPosts': _userFeedPosts.map((e) => e.toJson()).toList(),
     };
     await prefs.setString(_prefsKey, jsonEncode(map));
   }
@@ -97,6 +113,35 @@ class AppState extends ChangeNotifier {
 
   void resetProgress() {
     _progressByLessonId.clear();
+    _persist();
+    notifyListeners();
+  }
+
+  // Feed actions
+  void toggleLike(String postId) {
+    if (_likedPostIds.contains(postId)) {
+      _likedPostIds.remove(postId);
+    } else {
+      _likedPostIds.add(postId);
+    }
+    _persist();
+    notifyListeners();
+  }
+
+  void addUserPost(String content) {
+    final now = DateTime.now().toUtc().toIso8601String();
+    final id = 'user-${now.hashCode}';
+    _userFeedPosts.insert(
+      0,
+      FeedPost(
+        id: id,
+        author: 'You',
+        content: content,
+        timestampIso: now,
+        isTeacher: false,
+        likes: 0,
+      ),
+    );
     _persist();
     notifyListeners();
   }

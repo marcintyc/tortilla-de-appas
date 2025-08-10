@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static ThemeData buildTheme() {
-    // Warm palette inspired by red → orange → yellow
-    const primarySeed = Color(0xFFFF6A00); // vivid orange
+    // Refined warm palette: coral red → tangerine → golden yellow
+    const primarySeed = Color(0xFFFF395E); // coral red
 
     final colorScheme = ColorScheme.fromSeed(
       seedColor: primarySeed,
@@ -16,7 +16,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: const Color(0xFFFFF8F0),
+      scaffoldBackgroundColor: const Color(0xFFFFFBF6),
       textTheme: textTheme,
       appBarTheme: AppBarTheme(
         centerTitle: true,
@@ -37,6 +37,8 @@ class AppTheme {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
+          backgroundColor: colorScheme.primary,
+          foregroundColor: colorScheme.onPrimary,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           textStyle: const TextStyle(fontWeight: FontWeight.w700),
@@ -50,9 +52,10 @@ class AppTheme {
 
   static LinearGradient warmGradient() {
     return const LinearGradient(
-      colors: [Color(0xFFFF4D4D), Color(0xFFFF8C00), Color(0xFFFFD200)],
+      colors: [Color(0xFFFF395E), Color(0xFFFF8A00), Color(0xFFFFD166)],
       begin: Alignment.centerLeft,
       end: Alignment.centerRight,
+      stops: [0.0, 0.6, 1.0],
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart' show rootBundle;
 
 import '../models/lesson.dart';
 import '../models/news_item.dart';
+import '../models/feed_post.dart';
 
 class ContentLoader {
   static Future<List<Lesson>> loadLessons() async {
@@ -16,6 +17,14 @@ class ContentLoader {
     final data = jsonDecode(raw) as List<dynamic>;
     return data
         .map((e) => NewsItem.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  static Future<List<FeedPost>> loadFeed() async {
+    final raw = await rootBundle.loadString('assets/content/feed.json');
+    final data = jsonDecode(raw) as List<dynamic>;
+    return data
+        .map((e) => FeedPost.fromJson(e as Map<String, dynamic>))
         .toList();
   }
 }

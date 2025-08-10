@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../theme/app_theme.dart';
+import '../state/app_state.dart';
 
 class AppShell extends StatelessWidget {
   const AppShell({super.key, required this.child});
@@ -10,6 +12,7 @@ class AppShell extends StatelessWidget {
   static const _destinations = [
     _Dest(label: 'Home', icon: Icons.home_outlined, route: '/'),
     _Dest(label: 'Learn', icon: Icons.school_outlined, route: '/learn'),
+    _Dest(label: 'Feed', icon: Icons.forum_outlined, route: '/feed'),
     _Dest(label: 'Videos', icon: Icons.ondemand_video_outlined, route: '/videos'),
     _Dest(label: 'Settings', icon: Icons.settings_outlined, route: '/settings'),
   ];
@@ -28,7 +31,7 @@ class AppShell extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFFF4D4D), Color(0xFFFF8C00), Color(0xFFFFD200)],
+            colors: [Color(0xFFFF395E), Color(0xFFFF8A00), Color(0xFFFFD166)],
             stops: [0.0, 0.6, 1.0],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
@@ -77,6 +80,10 @@ class AppShell extends StatelessWidget {
         ],
         onDestinationSelected: (index) {
           final dest = _destinations[index];
+          if (dest.route == '/feed' && !context.read<AppState>().isSubscribed) {
+            context.go('/paywall');
+            return;
+          }
           if (dest.route != location) context.go(dest.route);
         },
       ),

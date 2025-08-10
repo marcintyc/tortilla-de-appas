@@ -1,0 +1,18 @@
+[
+  {
+    "id": "seed-001",
+    "author": "Teacher",
+    "content": "¡Bienvenidos! Comparte tus dudas aquí y responderé en el día.",
+    "timestampIso": "2025-08-01T08:00:00Z",
+    "isTeacher": true,
+    "likes": 12
+  },
+  {
+    "id": "seed-002",
+    "author": "Ana",
+    "content": "¿Consejos para pronunciar la R fuerte?",
+    "timestampIso": "2025-08-08T09:15:00Z",
+    "isTeacher": false,
+    "likes": 4
+  }
+]
