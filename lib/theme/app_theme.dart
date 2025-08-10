@@ -28,7 +28,7 @@ class AppTheme {
           color: colorScheme.onSurface,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 0,
         color: Colors.white,
         shape: RoundedRectangleBorder(
