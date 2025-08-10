@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Habla – Learn Spanish A1–B2">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Habla – Learn Spanish</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#FF6A00" />
+  <style>
+    body { margin: 0; background: #FFF8F0; }
+    .loader { position: absolute; inset: 0; display: grid; place-items: center; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif; }
+  </style>
+</head>
+<body>
+  <div class="loader">Loading Habla…</div>
+  <script src="flutter.js" defer></script>
+  <script>
+    window.addEventListener('load', function(ev) {
+      _flutter.loader.loadEntrypoint({}).then(function(engineInitializer) {
+        return engineInitializer.initializeEngine({renderer: 'canvaskit'});
+      }).then(function(appRunner) {
+        return appRunner.runApp();
+      });
+    });
+  </script>
+</body>
+</html>

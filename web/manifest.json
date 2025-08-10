@@ -1,0 +1,21 @@
+{
+  "name": "Habla – Learn Spanish",
+  "short_name": "Habla",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#FFF8F0",
+  "theme_color": "#FF6A00",
+  "description": "Modern Spanish learning app (A1–B2) with free and paid paths.",
+  "icons": [
+    {
+      "src": "icons/Icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/Icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+[
+  {"id": "A1-01", "title": "Saludos básicos", "description": "Hola, adiós, por favor, gracias.", "level": "A1", "isPaid": false},
+  {"id": "A1-02", "title": "Presentarte", "description": "Cómo decir tu nombre y de dónde eres.", "level": "A1", "isPaid": false},
+  {"id": "A1-03", "title": "Números y colores", "description": "Aprende 1-100 y los colores comunes.", "level": "A1", "isPaid": true},
+
+  {"id": "A2-01", "title": "Rutinas diarias", "description": "Habla sobre tu día con el presente.", "level": "A2", "isPaid": false},
+  {"id": "A2-02", "title": "El pasado simple", "description": "Introducción al pretérito.", "level": "A2", "isPaid": true},
+
+  {"id": "B1-01", "title": "Conversación en viajes", "description": "Aeropuerto, hotel, restaurantes.", "level": "B1", "isPaid": true},
+  {"id": "B1-02", "title": "Opiniones y debates", "description": "Expresa acuerdo y desacuerdo.", "level": "B1", "isPaid": true},
+
+  {"id": "B2-01", "title": "Subjuntivo en contexto", "description": "Deseos, dudas y recomendaciones.", "level": "B2", "isPaid": true},
+  {"id": "B2-02", "title": "Noticias y medios", "description": "Analiza artículos y entrevistas.", "level": "B2", "isPaid": true}
+]
