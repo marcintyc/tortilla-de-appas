@@ -1,0 +1,12 @@
+[
+  {
+    "question": "¿Cómo se dice 'good morning' en español?",
+    "options": ["Buenas tardes", "Buenos días", "Buenas noches"],
+    "answer": 1
+  },
+  {
+    "question": "Selecciona el color 'red'",
+    "options": ["Rojo", "Azul", "Verde"],
+    "answer": 0
+  }
+]

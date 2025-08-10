@@ -129,14 +129,20 @@ class _LessonTile extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       child: Row(
         children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [Color(0xFFFF6A00), Color(0xFFFFD200)]),
-              borderRadius: BorderRadius.circular(12),
+          if (lesson.imageUrl != null)
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(lesson.imageUrl!, width: 64, height: 44, fit: BoxFit.cover),
+            )
+          else
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(colors: [Color(0xFFFF6A00), Color(0xFFFFD200)]),
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
-          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

@@ -25,3 +25,5 @@ flutter:
     - assets/content/lessons.json
     - assets/content/news.json
     - assets/content/feed.json
+    - assets/content/flashcards.json
+    - assets/content/quiz.json

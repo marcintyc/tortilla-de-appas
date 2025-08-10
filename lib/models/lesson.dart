@@ -5,6 +5,7 @@ class Lesson {
     required this.description,
     required this.level,
     required this.isPaid,
+    this.imageUrl,
   });
 
   final String id;
@@ -12,6 +13,7 @@ class Lesson {
   final String description;
   final String level; // 'A1'...'B2'
   final bool isPaid;
+  final String? imageUrl;
 
   factory Lesson.fromJson(Map<String, dynamic> json) => Lesson(
         id: json['id'] as String,
@@ -19,6 +21,7 @@ class Lesson {
         description: json['description'] as String,
         level: json['level'] as String,
         isPaid: json['isPaid'] as bool? ?? false,
+        imageUrl: json['imageUrl'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -27,5 +30,6 @@ class Lesson {
         'description': description,
         'level': level,
         'isPaid': isPaid,
+        if (imageUrl != null) 'imageUrl': imageUrl,
       };
 }

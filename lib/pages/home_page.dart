@@ -25,6 +25,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<AppState>();
+    final isLogged = appState.isLoggedIn;
+    final name = appState.userName ?? '';
 
     return CustomScrollView(
       slivers: [
@@ -35,7 +37,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '¡Hola! Let\'s learn Spanish',
+                  isLogged ? 'Hola, $name!' : '¡Hola! Let\'s learn Spanish',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.w800,
                       ),
@@ -58,9 +60,18 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 const SizedBox(height: 16),
-                FilledButton(
-                  onPressed: () => context.go('/learn'),
-                  child: const Text('Go to Learning Path'),
+                Row(
+                  children: [
+                    FilledButton(
+                      onPressed: () => context.go('/learn'),
+                      child: const Text('Go to Learning Path'),
+                    ),
+                    const SizedBox(width: 8),
+                    FilledButton.tonal(
+                      onPressed: () => context.go('/games'),
+                      child: const Text('Play games'),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -119,51 +130,64 @@ class _LessonCard extends StatelessWidget {
     final completed = appState.progress[lesson.id]?.completed == true;
 
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (lesson.imageUrl != null)
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              child: AspectRatio(
+                aspectRatio: 16/9,
+                child: Image.network(lesson.imageUrl!, fit: BoxFit.cover),
+              ),
+            ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(colors: [Color(0xFFFF4D4D), Color(0xFFFF8C00)]),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(colors: [Color(0xFFFF4D4D), Color(0xFFFF8C00)]),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(lesson.title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+                          Text('Level ${lesson.level}', style: Theme.of(context).textTheme.bodySmall),
+                        ],
+                      ),
+                    ),
+                    Icon(completed ? Icons.check_circle : Icons.radio_button_unchecked, color: completed ? Colors.green : Colors.grey),
+                  ],
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(lesson.title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
-                      Text('Level ${lesson.level}', style: Theme.of(context).textTheme.bodySmall),
-                    ],
-                  ),
-                ),
-                Icon(completed ? Icons.check_circle : Icons.radio_button_unchecked, color: completed ? Colors.green : Colors.grey),
+                const SizedBox(height: 12),
+                Text(lesson.description),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    FilledButton.tonal(
+                      onPressed: () {
+                        appState.markLessonCompleted(lesson.id, !completed);
+                      },
+                      child: Text(completed ? 'Mark as not done' : 'Mark as done'),
+                    ),
+                    const SizedBox(width: 8),
+                    TextButton(onPressed: () => context.go('/learn'), child: const Text('View path')),
+                  ],
+                )
               ],
             ),
-            const SizedBox(height: 12),
-            Text(lesson.description),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                FilledButton.tonal(
-                  onPressed: () {
-                    appState.markLessonCompleted(lesson.id, !completed);
-                  },
-                  child: Text(completed ? 'Mark as not done' : 'Mark as done'),
-                ),
-                const SizedBox(width: 8),
-                TextButton(onPressed: () => context.go('/learn'), child: const Text('View path')),
-              ],
-            )
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

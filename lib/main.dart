@@ -13,6 +13,7 @@ import 'pages/settings_page.dart';
 import 'pages/paywall_page.dart';
 import 'pages/pro_feed_page.dart';
 import 'pages/login_page.dart';
+import 'pages/games_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,6 +50,11 @@ void main() async {
             path: '/settings',
             name: 'settings',
             builder: (context, state) => const SettingsPage(),
+          ),
+          GoRoute(
+            path: '/games',
+            name: 'games',
+            builder: (context, state) => const GamesPage(),
           ),
         ],
       ),
