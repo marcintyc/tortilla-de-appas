@@ -14,7 +14,7 @@ dependencies:
   shared_preferences: ^2.3.2
   google_fonts: ^6.2.1
   url_launcher: ^6.3.0
-  intl: ^0.19.0
+  # intl removed; using lightweight helper for month-day formatting
 
   # Flutter Material Icons
   cupertino_icons: ^1.0.8

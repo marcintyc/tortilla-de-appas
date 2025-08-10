@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
+
 
 import '../data/content_loader.dart';
 import '../models/feed_post.dart';
@@ -36,7 +36,8 @@ class _ProFeedPageState extends State<ProFeedPage> {
     final diff = now.difference(dt);
     if (diff.inMinutes < 60) return '${diff.inMinutes}m';
     if (diff.inHours < 24) return '${diff.inHours}h';
-    return DateFormat('MMM d').format(dt);
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return '${months[dt.month-1]} ${dt.day}';
   }
 
   @override
