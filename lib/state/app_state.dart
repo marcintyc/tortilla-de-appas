@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/feed_post.dart';
+import '../models/feed_comment.dart';
 
 enum CefrLevel { a1, a2, b1, b2 }
+
+enum UserRole { student, teacher }
 
 extension CefrLevelX on CefrLevel {
   String get label => switch (this) {
@@ -37,15 +40,27 @@ class AppState extends ChangeNotifier {
   bool _isSubscribed = false;
   final Map<String, LessonProgress> _progressByLessonId = {};
 
+  // Auth
+  String? _userName;
+  UserRole _userRole = UserRole.student;
+
   // PRO community feed state
   final List<FeedPost> _userFeedPosts = [];
   final Set<String> _likedPostIds = {};
+  final Map<String, List<FeedComment>> _userCommentsByPostId = {};
 
   CefrLevel? get selectedLevel => _selectedLevel;
   bool get isSubscribed => _isSubscribed;
   Map<String, LessonProgress> get progress => _progressByLessonId;
+
+  String? get userName => _userName;
+  UserRole get userRole => _userRole;
+  bool get isLoggedIn => _userName != null && _userName!.trim().isNotEmpty;
+
   List<FeedPost> get userFeedPosts => List.unmodifiable(_userFeedPosts);
   Set<String> get likedPostIds => Set.unmodifiable(_likedPostIds);
+  List<FeedComment> commentsFor(String postId) =>
+      List.unmodifiable(_userCommentsByPostId[postId] ?? const []);
 
   Future<void> restoreFromStorage() async {
     final prefs = await SharedPreferences.getInstance();
@@ -73,6 +88,18 @@ class AppState extends ChangeNotifier {
       for (final up in userPosts) {
         _userFeedPosts.add(FeedPost.fromJson(up));
       }
+      final commentsMap = (map['userCommentsByPostId'] as Map?)?.cast<String, dynamic>() ?? {};
+      commentsMap.forEach((postId, list) {
+        final items = (list as List).cast<Map<String, dynamic>>();
+        _userCommentsByPostId[postId] = items.map(FeedComment.fromJson).toList();
+      });
+      final savedName = map['userName'] as String?;
+      final savedRole = map['userRole'] as String?;
+      _userName = savedName;
+      _userRole = switch (savedRole) {
+        'teacher' => UserRole.teacher,
+        _ => UserRole.student,
+      };
     } catch (_) {
       // ignore malformed state
     }
@@ -86,6 +113,9 @@ class AppState extends ChangeNotifier {
       'progress': _progressByLessonId.values.map((e) => e.toJson()).toList(),
       'likedPostIds': _likedPostIds.toList(),
       'userFeedPosts': _userFeedPosts.map((e) => e.toJson()).toList(),
+      'userCommentsByPostId': _userCommentsByPostId.map((k, v) => MapEntry(k, v.map((e) => e.toJson()).toList())),
+      'userName': _userName,
+      'userRole': _userRole == UserRole.teacher ? 'teacher' : 'student',
     };
     await prefs.setString(_prefsKey, jsonEncode(map));
   }
@@ -98,6 +128,20 @@ class AppState extends ChangeNotifier {
 
   void toggleSubscription([bool? value]) {
     _isSubscribed = value ?? !_isSubscribed;
+    _persist();
+    notifyListeners();
+  }
+
+  void signIn({required String name, required UserRole role}) {
+    _userName = name.trim();
+    _userRole = role;
+    _persist();
+    notifyListeners();
+  }
+
+  void signOut() {
+    _userName = null;
+    _userRole = UserRole.student;
     _persist();
     notifyListeners();
   }
@@ -135,13 +179,28 @@ class AppState extends ChangeNotifier {
       0,
       FeedPost(
         id: id,
-        author: 'You',
+        author: isLoggedIn ? (_userName ?? 'You') : 'You',
         content: content,
         timestampIso: now,
-        isTeacher: false,
+        isTeacher: _userRole == UserRole.teacher,
         likes: 0,
       ),
     );
+    _persist();
+    notifyListeners();
+  }
+
+  void addComment({required String postId, required String content}) {
+    final now = DateTime.now().toUtc().toIso8601String();
+    final id = 'c-${now.hashCode}';
+    final list = _userCommentsByPostId.putIfAbsent(postId, () => []);
+    list.add(FeedComment(
+      id: id,
+      author: isLoggedIn ? (_userName ?? 'You') : 'You',
+      content: content,
+      timestampIso: now,
+      isTeacher: _userRole == UserRole.teacher,
+    ));
     _persist();
     notifyListeners();
   }

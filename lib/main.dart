@@ -12,6 +12,7 @@ import 'pages/video_news_page.dart';
 import 'pages/settings_page.dart';
 import 'pages/paywall_page.dart';
 import 'pages/pro_feed_page.dart';
+import 'pages/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,6 +56,11 @@ void main() async {
         path: '/paywall',
         name: 'paywall',
         builder: (context, state) => const PaywallPage(),
+      ),
+      GoRoute(
+        path: '/login',
+        name: 'login',
+        builder: (context, state) => const LoginPage(),
       ),
     ],
   );
