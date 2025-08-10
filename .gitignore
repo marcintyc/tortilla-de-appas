@@ -1,0 +1,17 @@
+.dart_tool/
+.packages
+.pub-cache/
+build/
+.ios/
+.android/
+.macos/
+.windows/
+.linux/
+web/.dart_tool/
+# web/manifest.json
+flutter_export_environment.sh
+**/GeneratedPluginRegistrant.*
+.idea/
+.vscode/
+.DS_Store
+**/*.lock
