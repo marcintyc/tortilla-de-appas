@@ -19,7 +19,7 @@
   <script>
     window.addEventListener('load', function(ev) {
       _flutter.loader.loadEntrypoint({}).then(function(engineInitializer) {
-        return engineInitializer.initializeEngine({renderer: 'canvaskit'});
+        return engineInitializer.initializeEngine();
       }).then(function(appRunner) {
         return appRunner.runApp();
       });
